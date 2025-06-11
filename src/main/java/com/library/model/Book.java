@@ -39,7 +39,8 @@ public class Book {
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20, nullable = false)
-    private BookStatus status = BookStatus.AVAILABLE; // Valor padrão
+    @Builder.Default
+    private BookStatus status = BookStatus.AVAILABLE;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)

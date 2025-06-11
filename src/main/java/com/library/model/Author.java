@@ -31,6 +31,7 @@ public class Author {
     private String biography;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private Set<Book> books = new HashSet<>();
 
     @CreationTimestamp

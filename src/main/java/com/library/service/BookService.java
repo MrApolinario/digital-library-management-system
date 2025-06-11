@@ -1,5 +1,6 @@
 package com.library.service;
 
+import com.library.model.BookStatus; 
 import com.library.dto.BookDTO;
 import com.library.exception.ResourceNotFoundException;
 import com.library.mapper.BookMapper;
@@ -61,7 +62,8 @@ public class BookService {
 
         existingBook.setTitle(bookDTO.getTitle());
         existingBook.setIsbn(bookDTO.getIsbn());
-        existingBook.setStatus(bookDTO.getStatus());
+        BookStatus status = BookStatus.valueOf(bookDTO.getStatus().toUpperCase());
+        existingBook.setStatus(status);
 
         Author author = authorRepository.findById(bookDTO.getAuthorId())
                 .orElseThrow(() -> new ResourceNotFoundException("Author not found with id: " + bookDTO.getAuthorId()));
