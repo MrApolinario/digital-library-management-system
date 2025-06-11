@@ -1,7 +1,8 @@
 package com.library.service.impl;
 
 import com.library.dto.AuthorDTO;
-import com.library.model.AuthorModel;
+// TROQUE este import:
+import com.library.entity.Author;  // <-- aqui está sua entidade Author, não AuthorModel
 import com.library.repository.AuthorRepository;
 import com.library.service.AuthorService;
 import org.modelmapper.ModelMapper;
@@ -25,30 +26,30 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Page<AuthorDTO> getAllAuthors(Pageable pageable) {
         return authorRepository.findAll(pageable)
-                .map(authorModel -> modelMapper.map(authorModel, AuthorDTO.class));
+                .map(author -> modelMapper.map(author, AuthorDTO.class));
     }
 
     @Override
     public AuthorDTO getAuthorById(Long id) {
-        AuthorModel authorModel = authorRepository.findById(id)
+        Author author = authorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Author not found"));
-        return modelMapper.map(authorModel, AuthorDTO.class);
+        return modelMapper.map(author, AuthorDTO.class);
     }
 
     @Override
     public AuthorDTO createAuthor(AuthorDTO dto) {
-        AuthorModel authorModel = modelMapper.map(dto, AuthorModel.class);
-        AuthorModel saved = authorRepository.save(authorModel);
+        Author author = modelMapper.map(dto, Author.class);
+        Author saved = authorRepository.save(author);
         return modelMapper.map(saved, AuthorDTO.class);
     }
 
     @Override
     public AuthorDTO updateAuthor(Long id, AuthorDTO dto) {
-        AuthorModel existing = authorRepository.findById(id)
+        Author existing = authorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Author not found"));
         existing.setName(dto.getName());
         existing.setBiography(dto.getBiography());
-        AuthorModel saved = authorRepository.save(existing);
+        Author saved = authorRepository.save(existing);
         return modelMapper.map(saved, AuthorDTO.class);
     }
 
@@ -57,4 +58,3 @@ public class AuthorServiceImpl implements AuthorService {
         authorRepository.deleteById(id);
     }
 }
-

@@ -1,10 +1,10 @@
 package com.library.service;
 
-import com.library.model.BookStatus; 
+import com.library.model.BookStatus;
 import com.library.dto.BookDTO;
+import com.library.entity.Author;
 import com.library.exception.ResourceNotFoundException;
 import com.library.mapper.BookMapper;
-import com.library.model.AuthorModel;
 import com.library.model.BookModel;
 import com.library.repository.AuthorRepository;
 import com.library.repository.BookRepository;
@@ -47,7 +47,7 @@ public class BookService {
     public BookDTO createBook(BookDTO bookDTO) {
         log.info("Creating book: {}", bookDTO);
         BookModel book = bookMapper.toEntity(bookDTO);
-        AuthorModel author = authorRepository.findById(bookDTO.getAuthorId())
+        Author author = authorRepository.findById(bookDTO.getAuthorId())
                 .orElseThrow(() -> new ResourceNotFoundException("Author not found with id: " + bookDTO.getAuthorId()));
         book.setAuthor(author);
         BookModel savedBook = bookRepository.save(book);
@@ -65,7 +65,7 @@ public class BookService {
         BookStatus status = BookStatus.valueOf(bookDTO.getStatus().toUpperCase());
         existingBook.setStatus(status);
 
-        AuthorModel author = authorRepository.findById(bookDTO.getAuthorId())
+        Author author = authorRepository.findById(bookDTO.getAuthorId())
                 .orElseThrow(() -> new ResourceNotFoundException("Author not found with id: " + bookDTO.getAuthorId()));
         existingBook.setAuthor(author);
 

@@ -1,5 +1,6 @@
 package com.library.model;
 
+import com.library.entity.Author;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -32,7 +33,7 @@ public class BookModel {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", nullable = false)
-    private AuthorModel author;
+    private Author author;
 
     @Column(columnDefinition = "TEXT")
     private String description;
@@ -50,12 +51,10 @@ public class BookModel {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    // Método auxiliar para verificar disponibilidade
     public boolean isAvailable() {
         return this.status == BookStatus.AVAILABLE;
     }
 
-    // Método para emprestar o livro
     public void borrow() {
         if (!isAvailable()) {
             throw new IllegalStateException("Book is not available for borrowing");
@@ -63,7 +62,6 @@ public class BookModel {
         this.status = BookStatus.BORROWED;
     }
 
-    // Método para devolver o livro
     public void returnBook() {
         this.status = BookStatus.AVAILABLE;
     }
