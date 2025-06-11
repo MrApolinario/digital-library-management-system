@@ -1,6 +1,6 @@
 package com.library.repository;
 
-import com.library.model.Book;
+import com.library.model.BookModel;
 import com.library.model.BookStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface BookRepository extends JpaRepository<Book, Long> {
-    Optional<Book> findByIsbn(String isbn);
-    List<Book> findByAuthorId(Long authorId);
-    List<Book> findByStatus(BookStatus status);
-    Page<Book> findByTitleContainingIgnoreCase(String title, Pageable pageable);
+public interface BookRepository extends JpaRepository<BookModel, Long> {
+    Optional<BookModel> findByIsbn(String isbn);
+    List<BookModel> findByAuthorId(Long authorId);
+    List<BookModel> findByStatus(BookStatus status);
+    Page<BookModel> findByTitleContainingIgnoreCase(String title, Pageable pageable);
 }

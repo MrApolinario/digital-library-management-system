@@ -4,8 +4,8 @@ import com.library.model.BookStatus;
 import com.library.dto.BookDTO;
 import com.library.exception.ResourceNotFoundException;
 import com.library.mapper.BookMapper;
-import com.library.model.Author;
-import com.library.model.Book;
+import com.library.model.AuthorModel;
+import com.library.model.BookModel;
 import com.library.repository.AuthorRepository;
 import com.library.repository.BookRepository;
 import org.slf4j.Logger;
@@ -38,7 +38,7 @@ public class BookService {
 
     public BookDTO getBookById(Long id) {
         log.info("Fetching book with id {}", id);
-        Book book = bookRepository.findById(id)
+        BookModel book = bookRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found with id: " + id));
         return bookMapper.toDto(book);
     }
@@ -46,18 +46,18 @@ public class BookService {
     @Transactional
     public BookDTO createBook(BookDTO bookDTO) {
         log.info("Creating book: {}", bookDTO);
-        Book book = bookMapper.toEntity(bookDTO);
-        Author author = authorRepository.findById(bookDTO.getAuthorId())
+        BookModel book = bookMapper.toEntity(bookDTO);
+        AuthorModel author = authorRepository.findById(bookDTO.getAuthorId())
                 .orElseThrow(() -> new ResourceNotFoundException("Author not found with id: " + bookDTO.getAuthorId()));
         book.setAuthor(author);
-        Book savedBook = bookRepository.save(book);
+        BookModel savedBook = bookRepository.save(book);
         return bookMapper.toDto(savedBook);
     }
 
     @Transactional
     public BookDTO updateBook(Long id, BookDTO bookDTO) {
         log.info("Updating book with id {}", id);
-        Book existingBook = bookRepository.findById(id)
+        BookModel existingBook = bookRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found with id: " + id));
 
         existingBook.setTitle(bookDTO.getTitle());
@@ -65,18 +65,18 @@ public class BookService {
         BookStatus status = BookStatus.valueOf(bookDTO.getStatus().toUpperCase());
         existingBook.setStatus(status);
 
-        Author author = authorRepository.findById(bookDTO.getAuthorId())
+        AuthorModel author = authorRepository.findById(bookDTO.getAuthorId())
                 .orElseThrow(() -> new ResourceNotFoundException("Author not found with id: " + bookDTO.getAuthorId()));
         existingBook.setAuthor(author);
 
-        Book updatedBook = bookRepository.save(existingBook);
+        BookModel updatedBook = bookRepository.save(existingBook);
         return bookMapper.toDto(updatedBook);
     }
 
     @Transactional
     public void deleteBook(Long id) {
         log.info("Deleting book with id {}", id);
-        Book book = bookRepository.findById(id)
+        BookModel book = bookRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found with id: " + id));
         bookRepository.delete(book);
     }

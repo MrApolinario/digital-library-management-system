@@ -17,7 +17,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Author {
+public class AuthorModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +32,7 @@ public class Author {
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
-    private Set<Book> books = new HashSet<>();
+    private Set<BookModel> books = new HashSet<>();
 
     @CreationTimestamp
     private LocalDateTime createdAt;
